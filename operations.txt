@@ -1,0 +1,19 @@
+add: 
+    i/p : 0^m10^n
+    o/p : 0^(m+n)
+sub
+    i/p : 0^m10^n
+    o/p : 0^(m-n) if m > n
+          0^0 if m <= n
+mult
+    i/p : 0^m10^n1
+
+div
+2^n
+log2
+    i/p: 0#0^n
+    o/p: 0^(logn)
+and
+or
+not
+xor
