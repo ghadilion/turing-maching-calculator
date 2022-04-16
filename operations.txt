@@ -15,5 +15,11 @@ log2
     o/p: 0^(logn)
 and
 or
-not
 xor
+not
+binary to unary
+unary to binary
+bonus:
+    m^n
+    log_b a
+    factorial
