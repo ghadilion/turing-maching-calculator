@@ -14,6 +14,17 @@ using namespace std;
 
 #define TOINT(x) (x-'0')
 
+#define ADD 1
+#define SUB 2
+#define MUL 3
+#define DIV 4
+#define POW 5
+#define LOG 6
+#define AND 7
+#define OR  8
+#define XOR 9
+#define EXIT 10
+
 class cell {
 public:
     int data;
@@ -34,7 +45,6 @@ class turing_machine {
 public:
     turing_machine(const char*);
     void insert(int, bool);
-    void displayDelta();
     void loadInput();
     void calculate();
     void output();
@@ -120,36 +130,22 @@ void turing_machine::insert(int c, bool moveRight) {
     }
 }
 
-void turing_machine::displayDelta() {
-    for(int k = 0; k < numStates; ++k) {
-        for(int j = 0; j < numTapeSymbols; ++j) {
-            for(int i = 0; i < 3; ++i) {
-                if(delta[i][j][k] == numTapeSymbols - 1 && i == NEWSYMBOL)
-                    cout << "B,";
-                else if(i == DIRECTION) {
-                    if(delta[i][j][k] == 1)
-                        cout << "R";
-                    else
-                        cout << "L";
-                }
-                else
-                    cout << delta[i][j][k] << ",";
-            }
-            cout << "\t";
-        }
-        cout << endl;
-    }
-}
-
 void turing_machine::loadInput() {
     int a, b;
-    if(strcmp(operation, "2pown") == 0) {
+    if(
+        strcmp(operation, "2pown") == 0 ||
+        strcmp(operation, "log2") == 0       
+    ) {
         cout << "\nEnter a number: ";
         cin >> a;
-        insert(1, RIGHT);
+        if(strcmp(operation, "2pown") == 0)
+            insert(1, RIGHT);
+        else
+            insert(2, RIGHT);
         for(int i = 0; i < a; ++i)
             insert(0, RIGHT);
-        insert(2, RIGHT);
+        if(strcmp(operation, "2pown") == 0)
+            insert(2, RIGHT);
     }
     else if(
         strcmp(operation, "and") == 0 ||
@@ -157,22 +153,25 @@ void turing_machine::loadInput() {
         strcmp(operation, "xor") == 0
     ) {
         char num1[32], num2[32];
-        bool isNotBinary = false;
+        bool isNotBinary;
         do {
+            isNotBinary = false;
             cout << "\nEnter 2 binary numbers of equal length: ";
             cin >> num1 >> num2;
-            for(int i = 0; num1[i] != '\0'; ++i)
+            for(int i = 0; num1[i] != '\0'; ++i) {
                 if(num1[i] != '1' && num1[i] != '0') {
-                    isNotBinary == true;
+                    isNotBinary = true;
                     break;
                 }
+            }
             if(isNotBinary)
                 continue;
-            for(int i = 0; num2[i] != '\0'; ++i)
+            for(int i = 0; num2[i] != '\0'; ++i) {
                 if(num2[i] != '1' && num2[i] != '0') {
-                    isNotBinary == true;
+                    isNotBinary = true;
                     break;
                 }
+            }
         } while (strlen(num1) != strlen(num2) || isNotBinary);
         for(int i = 0; num1[i] != '\0'; ++i)
             insert(TOINT(num1[i]), RIGHT);
@@ -254,7 +253,6 @@ void turing_machine::output() {
         }
         cout << "\n\n";
     }
-    
     else
         cout << "Output on tape: " << answer << "\n\n";
 }
@@ -286,10 +284,30 @@ void turing_machine::printTape() {
 }
 
 int main(int argc, char* argv[]) {
-    turing_machine T(argv[1]);
-    // T.displayDelta();
-    T.loadInput();
-    T.calculate();
-    T.output();
-
+    int choice = ADD;
+    while(choice != EXIT) {
+        cout << "\nCalculator using Turing Machine\n\n";
+        cout << "Operations:\n1. Addition\n2. Monus Subtraction\n";
+        cout << "3. Multiplication\n4. Division\n5. 2 power n\n";
+        cout << "6. log base 2\n7. AND\n8. OR\n9. XOR\n10. Exit";
+        cout << "\nEnter option: ";
+        cin >> choice;
+        char operation[32];
+        switch(choice) {
+            case ADD:   strcpy(operation, "add");       break;
+            case SUB:   strcpy(operation, "monusSub");  break;
+            case MUL:   strcpy(operation, "mul");       break;
+            case DIV:   strcpy(operation, "div");       break;
+            case POW:   strcpy(operation, "2pown");     break;
+            case LOG:   strcpy(operation, "log2");      break;
+            case AND:   strcpy(operation, "and");       break;
+            case OR:    strcpy(operation, "or");        break;
+            case XOR:   strcpy(operation, "xor");       break;
+            case EXIT:  default:                        continue;
+        }
+        turing_machine T(operation);
+        T.loadInput();
+        T.calculate();
+        T.output();
+    }
 }

@@ -17,9 +17,9 @@ and
 or
 xor
 not
-binary to unary
-unary to binary
 bonus:
+    binary to unary
+    unary to binary
     m^n
     log_b a
     factorial
