@@ -16,8 +16,8 @@ log2
 and
 or
 xor
-not
 bonus:
+    not
     binary to unary
     unary to binary
     m^n

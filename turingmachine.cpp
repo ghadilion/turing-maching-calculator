@@ -10,7 +10,7 @@ using namespace std;
 #define RIGHT 1
 #define LEFT 0
 
-#define B (numTapeSymbols - 1)
+#define B numTapeSymbols - 1
 
 #define TOINT(x) (x-'0')
 
@@ -254,7 +254,7 @@ void turing_machine::output() {
         cout << "\n\n";
     }
     else
-        cout << "Output on tape: " << answer << "\n\n";
+        cout << "Output: " << answer << "\n\n";
 }
 
 void turing_machine::printTape() {
